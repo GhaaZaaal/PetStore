@@ -6,8 +6,12 @@ const dbConnection = require('./config/db');
 
 dbConnection();
 
+// APIs 
 const categoryApi = require('./apis/categoryApi');
 const subCategoryApi = require('./apis/subCategoryApi');
+const brandApi = require('./apis/brandApi');
+
+// Error Handler
 const ApiError = require('./utils/apiError');
 const globalError = require('./middlewares/errorMiddleware');
 
@@ -25,6 +29,7 @@ if (process.env.NODE_ENV === 'Development') {
 const apiV = process.env.API_V;
 app.use(`${apiV}/categories`, categoryApi);
 app.use(`${apiV}/subCategories`, subCategoryApi);
+app.use(`${apiV}/brands`, brandApi);
 // Create Error and Send it To Error Handling Middleware
 app.all('*', (req, res, next) => {
   next(new ApiError(`Can't Find This Route: ${req.originalUrl}`, 400));
@@ -33,6 +38,11 @@ app.all('*', (req, res, next) => {
 // Global Error Handling Middleware
 app.use(globalError);
 
+const PORT = process.env.PORT || 5000;
+const server = app.listen(PORT, () => {
+  console.log(`App is running on http://localhost:${PORT}`);
+});
+
 // Handle Rejections Errors Outside Express
 process.on('unhandledRejection', (err) => {
   console.error(`Unhandled Rejection Error : ${err.name} | ${err.message}`);
@@ -40,9 +50,4 @@ process.on('unhandledRejection', (err) => {
     console.error(`Shutting Down....`);
     process.exit(1);
   });
-});
-
-const PORT = process.env.PORT || 5000;
-const server = app.listen(PORT, () => {
-  console.log(`App is running on http://localhost:${PORT}`);
 });
