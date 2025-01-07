@@ -7,6 +7,7 @@ const dbConnection = require('./config/db');
 dbConnection();
 
 const categoryApi = require('./apis/categoryApi');
+const subCategoryApi = require('./apis/subCategoryApi');
 const ApiError = require('./utils/apiError');
 const globalError = require('./middlewares/errorMiddleware');
 
@@ -23,6 +24,7 @@ if (process.env.NODE_ENV === 'Development') {
 
 const apiV = process.env.API_V;
 app.use(`${apiV}/categories`, categoryApi);
+app.use(`${apiV}/subCategories`, subCategoryApi);
 // Create Error and Send it To Error Handling Middleware
 app.all('*', (req, res, next) => {
   next(new ApiError(`Can't Find This Route: ${req.originalUrl}`, 400));
