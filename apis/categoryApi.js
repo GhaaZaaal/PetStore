@@ -14,7 +14,11 @@ const {
   deleteCategory,
 } = require('../controllers/categoryControllers');
 
+const subCategoriesApi = require('./subCategoryApi');
+
 const router = express.Router();
+
+router.use('/:categoryId/subCategories', subCategoriesApi);
 
 router.route('/').post(createCategoryValidator, createCategories).get(getCategories);
 

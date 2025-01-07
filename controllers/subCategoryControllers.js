@@ -4,6 +4,11 @@ const ApiError = require('../utils/apiError');
 
 const SubCategory = require('../models/subCategoryModel');
 
+exports.getCategoryIdToBody = (req, res, next) => {
+  if (!req.body.category) req.body.category = req.params.categoryId;
+  next();
+};
+
 // @desc:   Create A New SubCategory
 // @route:  POST {API_V}/subCategories
 // @access: Private
@@ -18,6 +23,13 @@ exports.createSubCategory = asyncHandler(async (req, res) => {
   res.status(201).json({ data: subCategory });
 });
 
+exports.createFilterBody = (req, res, next) => {
+  let filterObject = {};
+  if (req.params.categoryId) filterObject = { category: req.params.categoryId };
+  req.filterObject = filterObject;
+  next();
+};
+
 // @desc:   Get A List Of Sub Categories
 // @route:  GET {API_V}/subCategories
 // @access: Public
@@ -25,7 +37,8 @@ exports.getSubCategories = asyncHandler(async (req, res) => {
   const page = req.query.page * 1 || 1;
   const limit = req.query.limit * 1 || 5;
   const skip = (page - 1) * limit; // (3 - 1) * 5 = 5
-  const subCategories = await SubCategory.find({}).skip(skip).limit(limit);
+
+  const subCategories = await SubCategory.find(req.filterObject).skip(skip).limit(limit);
   // .populate({ path: 'category', select: 'name -_id' });
   res.status(200).json({ results: subCategories.length, page, data: subCategories });
 });
@@ -82,4 +95,3 @@ exports.deleteSubCategory = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({ data: `Sub Category ${subCategory.name} Deleted Successfully ` });
 });
-
