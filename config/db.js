@@ -11,10 +11,6 @@ const dbConnection = () => {
     .then((conn) => {
       console.log(`DB Connected Successfully at Host : ${conn.connection.host}`);
     })
-    .catch((err) => {
-      console.error(`DB Connection Failed : ${err}`);
-      process.exit(1);
-    });
 };
 
 module.exports = dbConnection;
