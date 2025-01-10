@@ -6,18 +6,20 @@ Welcome to the **Pet Store Backend API**! 🐶🐱🐟 This is a backend-only pr
 
 ## 🌟 Features
 
-- Manage users (create, update, delete).
-- Manage products for pets (cats, dogs, fish, etc.).
-- Simple and clean API for interacting with the database.
-- Beginner-friendly codebase.
+- **User Management**: Create, update, delete, and retrieve user information.
+- **Product Management**: Manage a variety of pet products.
+- **Order Management**: Handle customer orders and track purchases.
+- **Enhanced User Model**: The user model includes attributes like name, email, password, address, and phone for a comprehensive profile.
+- **Improved Error Handling**: Recent updates have addressed previous errors for a more robust experience.
 
 ---
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 - **Node.js**: JavaScript runtime for the server.
 - **Express**: Web framework for building REST APIs.
-- **MySQL**: Database for storing data.
+- **MongoDB**: Database for storing data.
+- **Mongoose**: ODM for MongoDB.
 - **Postman**: API testing and interaction.
 
 ---
@@ -29,14 +31,14 @@ Follow these steps to get the project running on your machine:
 ### 1️⃣ Prerequisites
 
 - Install [Node.js](https://nodejs.org/).
-- Install [MySQL](https://dev.mysql.com/downloads/).
-- Have a code editor (like VS Code) with WSL configured.
+- Install [MongoDB](https://www.mongodb.com/).
+- Have a code editor (like VS Code).
 
 ### 2️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/pet-store-backend.git
-cd pet-store-backend
+git clone https://github.com/GhaaZaaal/PetStore.git
+cd PetStore
 ```
 
 ### 3️⃣ Install Dependencies
@@ -47,22 +49,20 @@ npm install
 
 ### 4️⃣ Set Up the Database
 
-1. Open the `database/schema.sql` file.
-2. Create the database by running:
+Ensure MongoDB is running on your machine. You can start it using:
 
 ```bash
-mysql -u root -p < database/schema.sql
+mongod
 ```
 
 ### 5️⃣ Add Environment Variables
 
 Create a `.env` file in the root directory and include:
 
-```
-DB_HOST=localhost
-DB_USER=your_mysql_username
-DB_PASSWORD=your_mysql_password
-DB_NAME=petstore
+```env
+DB_URI=mongodb://localhost:27017/petstore
+PORT=3000
+JWT_SECRET=your_jwt_secret
 ```
 
 ### 6️⃣ Run the Server
@@ -85,14 +85,27 @@ Here are some basic routes to get started:
 
 ### Users
 
-- **GET /users**: Get all users.
-- **POST /users**: Add a new user.
-- **GET /users/:id**: Get a user by ID.
+- `GET /users`: Get all users.
+- `POST /users`: Add a new user.
+- `GET /users/:id`: Get a user by ID.
+- `PUT /users/:id`: Update a user by ID.
+- `DELETE /users/:id`: Delete a user by ID.
 
 ### Products
 
-- **GET /products**: Get all products.
-- **POST /products**: Add a new product.
+- `GET /products`: Get all products.
+- `POST /products`: Add a new product.
+- `GET /products/:id`: Get a product by ID.
+- `PUT /products/:id`: Update a product by ID.
+- `DELETE /products/:id`: Delete a product by ID.
+
+### Categories
+
+- `GET /categories`: Get all categories.
+- `POST /categories`: Create a new category.
+- `GET /categories/:id`: Get an category by ID.
+- `PUT /categories/:id`: Update an category by ID.
+- `DELETE /categories/:id`: Delete an category by ID.
 
 ### Example Request (Using Postman)
 
@@ -103,7 +116,9 @@ Here are some basic routes to get started:
 {
   "name": "John Doe",
   "email": "john@example.com",
-  "password": "password123"
+  "password": "password123",
+  "address": "123 Pet Street",
+  "phone": "+1234567890"
 }
 ```
 
@@ -111,9 +126,11 @@ Here are some basic routes to get started:
 
 ```json
 {
-  "id": 1,
+  "id": "60c72b2f9b1d8e6f88f8e8b7",
   "name": "John Doe",
-  "email": "john@example.com"
+  "email": "john@example.com",
+  "address": "123 Pet Street",
+  "phone": "+1234567890"
 }
 ```
 
@@ -121,19 +138,14 @@ Here are some basic routes to get started:
 
 ## 🔧 Future Improvements
 
-- Add authentication (e.g., JWT).
-- Include user roles and permissions.
-- Improve database queries with Promises.
-- Add product categories.
+- **Authentication**: Implement JWT-based authentication.
+- **User Roles**: Introduce roles and permissions.
+- **Advanced Search**: Add search and filtering for products and orders.
+- **Order Tracking**: Enhance order tracking and history features.
+- **Enhanced Validation**: Improve error handling and data validation.
 
 ---
 
 ## 🙏 Credits
 
-This project was built as part of a learning journey into backend development. Special thanks to the tutorials, documentation, and community resources that helped make this possible!
-
----
-
-## 📜 License
-
-This project is open-source and available under the [MIT License](LICENSE).
+This project is part of a learning journey into backend development. Special thanks to the tutorials, documentation, and community resources that made this possible!
