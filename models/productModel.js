@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 // 1- Create Schema
-const ProductSchema = new mongoose.Schema(
+const productSchema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -37,7 +37,7 @@ const ProductSchema = new mongoose.Schema(
     priceAfterDiscount: {
       type: Number,
     },
-    availableColors : [String],
+    availableColors: [String],
     imageCover: {
       type: String,
       required: [true, 'Product Image Cover Required'],
@@ -46,7 +46,7 @@ const ProductSchema = new mongoose.Schema(
     category: {
       type: mongoose.Schema.ObjectId,
       ref: 'Category',
-      required: [true, 'Product\'s Category Required'],
+      required: [true, "Product's Category Required"],
     },
     subCategories: [
       {
@@ -61,15 +61,25 @@ const ProductSchema = new mongoose.Schema(
     rateAverage: {
       type: Number,
       min: [1, 'Rating Must Be Above or Equal To 1.0'],
-      max: [5, 'Rating Must Be Equal To or Below 5.0'], 
+      max: [5, 'Rating Must Be Equal To or Below 5.0'],
     },
     ratingsCount: {
       type: Number,
       default: 0,
-    }
+    },
   },
   { timestamps: true }
 );
 
+// ? Testing Populate With Mongoose Middleware First Try
+productSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'category',
+    select: 'name',
+  });
+  next();
+});
+
 // 2- Create Model
-module.exports = mongoose.model('Product', ProductSchema);
+const Product = mongoose.model('Product', productSchema);
+module.exports = Product;

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 // 1- Create Schema
-const CategorySchema = new mongoose.Schema(
+const categorySchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -21,6 +21,5 @@ const CategorySchema = new mongoose.Schema(
 );
 
 // 2- Create Model
-const CategoryModel = mongoose.model('Category', CategorySchema);
-
-module.exports = CategoryModel;
+const Category = mongoose.model('Category', categorySchema);
+module.exports = Category;

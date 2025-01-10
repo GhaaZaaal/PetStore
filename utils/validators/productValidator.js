@@ -1,3 +1,4 @@
+const slugify = require('slugify');
 const { check } = require('express-validator');
 const SubCategory = require('../../models/subCategoryModel');
 const Category = require('../../models/categoryModel');
@@ -8,7 +9,11 @@ exports.createProductValidator = [
     .isLength({ min: 3 })
     .withMessage('Too Short Product Title')
     .notEmpty()
-    .withMessage('Name is Required'),
+    .withMessage('Name is Required')
+    .custom((value, { req }) => {
+      req.body.slug = slugify(value);
+      return true;
+    }),
   check('description')
     .notEmpty()
     .withMessage('Product Description is Required')
@@ -130,7 +135,12 @@ exports.updateProductValidator = [
     .withMessage('Product ID is Required')
     .isMongoId()
     .withMessage('Product ID Must be Valid'),
-
+  check('title')
+    .optional()
+    .custom((value, { req }) => {
+      req.body.slug = slugify(value);
+      return true;
+    }),
   validatorMiddleware,
 ];
 

@@ -11,6 +11,7 @@ const categoryApi = require('./apis/categoryApi');
 const subCategoryApi = require('./apis/subCategoryApi');
 const brandApi = require('./apis/brandApi');
 const productApi = require('./apis/productApi');
+const userApi = require('./apis/userApi');
 
 // Error Handler
 const ApiError = require('./utils/apiError');
@@ -32,6 +33,7 @@ app.use(`${apiV}/categories`, categoryApi);
 app.use(`${apiV}/subCategories`, subCategoryApi);
 app.use(`${apiV}/brands`, brandApi);
 app.use(`${apiV}/products`, productApi);
+app.use(`${apiV}/users`, userApi);
 // Create Error and Send it To Error Handling Middleware
 app.all('*', (req, res, next) => {
   next(new ApiError(`Can't Find This Route: ${req.originalUrl}`, 400));

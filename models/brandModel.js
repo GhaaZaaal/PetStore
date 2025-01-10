@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 // 1- Create Schema
-const BrandSchema = new mongoose.Schema(
+const brandSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -20,4 +20,5 @@ const BrandSchema = new mongoose.Schema(
 );
 
 // 2- Create Model
-module.exports = mongoose.model('Brand', BrandSchema);
+const Brand = mongoose.model('Brand', brandSchema);
+module.exports = Brand;
