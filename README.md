@@ -54,6 +54,8 @@ Ensure MongoDB is running on your machine. You can start it using:
 ```bash
 mongod
 ```
+Alternatively, you can use **MongoDB Atlas** for cloud storage instead of running MongoDB locally. See Step 5 for details on configuring the connection string.
+
 
 ### 5️⃣ Add Environment Variables
 
@@ -65,6 +67,13 @@ PORT=3000
 JWT_SECRET=your_jwt_secret
 ```
 
+If you're using MongoDB Atlas for cloud storage, replace the `DB_URI` in the `.env` file with your MongoDB Atlas connection string. Example:
+
+```env
+DB_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/petstore?retryWrites=true&w=majority
+```
+Make sure to replace <username> and <password> with your actual MongoDB Atlas credentials.
+
 ### 6️⃣ Run the Server
 
 Start the server using Node.js or nodemon:
@@ -75,7 +84,7 @@ npm start
 npx nodemon app.js
 ```
 
-The server will start at **http://localhost:3000**.
+The server will start at **http://localhost:5000**.
 
 ---
 
@@ -118,7 +127,7 @@ Here are some basic routes to get started:
   "email": "john@example.com",
   "password": "password123",
   "address": "123 Pet Street",
-  "phone": "+1234567890"
+  "phone": "01234567890"
 }
 ```
 
@@ -130,7 +139,7 @@ Here are some basic routes to get started:
   "name": "John Doe",
   "email": "john@example.com",
   "address": "123 Pet Street",
-  "phone": "+1234567890"
+  "phone": "01234567890"
 }
 ```
 
@@ -148,4 +157,4 @@ Here are some basic routes to get started:
 
 ## 🙏 Credits
 
-This project is part of a learning journey into backend development. Special thanks to the tutorials, documentation, and community resources that made this possible!
+This project is part of a learning journey at **ALX Software Engineering** Program into backend development. Special thanks to the tutorials, documentation, and community resources that made this possible!
