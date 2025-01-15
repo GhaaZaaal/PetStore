@@ -1,12 +1,10 @@
+const path = require('path');
+
 const express = require('express');
 const morgan = require('morgan');
 require('dotenv/config');
 
-const dbConnection = require('./config/db');
-
-dbConnection();
-
-// APIs 
+// APIs
 const categoryApi = require('./apis/categoryApi');
 const subCategoryApi = require('./apis/subCategoryApi');
 const brandApi = require('./apis/brandApi');
@@ -16,19 +14,24 @@ const userApi = require('./apis/userApi');
 // Error Handler
 const ApiError = require('./utils/apiError');
 const globalError = require('./middlewares/errorMiddleware');
+const dbConnection = require('./config/db');
+
+// Database Connection
+dbConnection();
 
 // Express App
 const app = express();
+const apiV = process.env.API_V;
 
 // Middleware for parsing JSON (in case you want to accept JSON requests)
 app.use(express.json());
+app.use(`${apiV}`, express.static(path.join(__dirname, 'uploads')));
 
 if (process.env.NODE_ENV === 'Development') {
   app.use(morgan('dev'));
   console.log(`Mode: ${process.env.NODE_ENV}`);
 }
 
-const apiV = process.env.API_V;
 app.use(`${apiV}/categories`, categoryApi);
 app.use(`${apiV}/subCategories`, subCategoryApi);
 app.use(`${apiV}/brands`, brandApi);
