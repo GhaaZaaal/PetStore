@@ -24,10 +24,12 @@ exports.getCategoryValidator = [
 
 exports.updateCategoryValidator = [
   check('id').isMongoId().withMessage('Invalid Category ID Format'),
-  check('name').custom((value, { req }) => {
-    req.body.slug = slugify(value);
-    return true;
-  }),
+  check('name')
+    .optional()
+    .custom((value, { req }) => {
+      req.body.slug = slugify(value);
+      return true;
+    }),
   validatorMiddleware,
 ];
 

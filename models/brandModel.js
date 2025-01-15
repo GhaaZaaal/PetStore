@@ -19,6 +19,21 @@ const brandSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+const setImageUrl = (doc) => {
+  if (doc.image) {
+    const imageUrl = `${process.env.APP_URL}${process.env.API_V}/brands/${doc.image}`;
+    doc.image = imageUrl;
+  }
+};
+
+brandSchema.post('init', (doc) => {
+  setImageUrl(doc);
+});
+
+brandSchema.post('save', (doc) => {
+  setImageUrl(doc);
+});
+
 // 2- Create Model
 const Brand = mongoose.model('Brand', brandSchema);
 module.exports = Brand;

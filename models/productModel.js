@@ -71,6 +71,26 @@ const productSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+const setImagesUrl = (doc) => {
+  if (doc.imageCover) {
+    const imageUrl = `${process.env.APP_URL}${process.env.API_V}/products/${doc.imageCover}`;
+    doc.imageCover = imageUrl;
+  }
+  if (doc.images) {
+    doc.images = doc.images.map(
+      (image) => `${process.env.APP_URL}${process.env.API_V}/products/${image}`
+    );
+  }
+};
+
+productSchema.post('init', (doc) => {
+  setImagesUrl(doc);
+});
+
+productSchema.post('save', (doc) => {
+  setImagesUrl(doc);
+});
+
 // ? Testing Populate With Mongoose Middleware First Try
 productSchema.pre(/^find/, function (next) {
   this.populate({

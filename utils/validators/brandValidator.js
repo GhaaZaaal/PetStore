@@ -24,10 +24,12 @@ exports.getBrandValidator = [
 
 exports.updateBrandValidator = [
   check('id').isMongoId().withMessage('Invalid Brand ID Format'),
-  check('name').custom((value, { req }) => {
-    req.body.slug = slugify(value);
-    return true;
-  }),
+  check('name')
+    .optional()
+    .custom((value, { req }) => {
+      req.body.slug = slugify(value);
+      return true;
+    }),
   validatorMiddleware,
 ];
 

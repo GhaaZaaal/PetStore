@@ -1,5 +1,32 @@
-const Brand = require('../models/brandModel');
+const sharp = require('sharp');
+const { v4: uuidv4 } = require('uuid');
+const asyncHandler = require('express-async-handler');
+
 const dry = require('./dontRepeatYourself');
+const { uploadSingleImage } = require('../middlewares/uploadImage');
+const Brand = require('../models/brandModel');
+
+exports.uploadBrandImage = uploadSingleImage('image');
+// @desc:   Image Processing
+// @access: Private
+exports.resizeBrandImage = asyncHandler(async (req, res, next) => {
+  const filename = `brand-${uuidv4()}-${Date.now()}.jpg`;
+
+  await sharp(req.file.buffer)
+    .resize(800, 800)
+    .toFormat('jpg')
+    .jpeg({ quality: 95 })
+    .toFile(`uploads/brands/${filename}`);
+
+  req.body.image = filename;
+  // console.log('File Name:', filename);
+  
+
+  next();
+});
+
+// @desc:   Upload Category Image
+// @access: Private
 
 // @desc:   Get A List Of Brands
 // @route:  GET {API_V}/brands
