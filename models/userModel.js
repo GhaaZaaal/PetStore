@@ -28,6 +28,11 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, 'User Password Required'],
     },
+    passwordChangedAt: Date,
+    passwordResetOTP: String,
+    passwordResetExpires: Date,
+    validatePassBeforeSave: Boolean,
+
     address: {
       type: String,
       trim: true,
@@ -36,12 +41,17 @@ const userSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    isAdmin: {
-      type: Boolean,
-      default: false,
+    roles: {
+      type: String,
+      enum: ['admin', 'user', 'manager'],
+      default: 'user',
     },
     profileImage: {
       type: String,
+    },
+    active: {
+      type: Boolean,
+      default: true,
     },
   },
   { timestamps: true }
