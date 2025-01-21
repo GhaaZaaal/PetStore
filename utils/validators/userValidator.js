@@ -49,7 +49,7 @@ exports.createUserValidator = [
   check('phone').optional().isMobilePhone(['ar-EG']),
   check('profileImage').optional(),
 
-  check('isAdmin').optional(),
+  check('roles').optional(),
 
   validatorMiddleware,
 ];
@@ -59,7 +59,7 @@ exports.getUserValidator = [
   validatorMiddleware,
 ];
 
-// ! Future Enhancement: Add More Validation Rules 
+// ! Future Enhancement: Add More Validation Rules
 exports.updateUserValidator = [
   check('id').isMongoId().withMessage('Invalid User ID Format'),
   check('name')
@@ -84,7 +84,7 @@ exports.updateUserValidator = [
   check('phone').optional().isMobilePhone(['ar-EG']),
   check('profileImage').optional(),
 
-  check('isAdmin').optional(),
+  check('roles').optional(),
   validatorMiddleware,
 ];
 
@@ -118,5 +118,35 @@ exports.updatePasswordValidator = [
 
 exports.deleteUserValidator = [
   check('id').isMongoId().withMessage('Invalid User ID Format'),
+  validatorMiddleware,
+];
+
+// ! Future Enhancement: Add More Validation Rules
+exports.UpdateLoggedUserDataValidator = [
+  check('name')
+    .optional()
+    .custom((value, { req }) => {
+      req.body.slug = slugify(value);
+      return true;
+    }),
+  check('email')
+    .notEmpty()
+    .withMessage('Email Required')
+    .isEmail()
+    .withMessage('Invalid Email Format')
+    .custom((value) =>
+      User.findOne({ email: value }).then((user) => {
+        if (user) {
+          return Promise.reject(new ApiError('Email Already Exists', 400));
+        }
+      })
+    ),
+
+  check('address').optional(),
+  check('phone')
+    .optional()
+    .isMobilePhone(['ar-EG'])
+    .withMessage('Invalid Mobile Number'),
+
   validatorMiddleware,
 ];
