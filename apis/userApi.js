@@ -5,6 +5,7 @@ const {
   updateUserValidator,
   deleteUserValidator,
   updatePasswordValidator,
+  UpdateLoggedUserDataValidator,
 } = require('../utils/validators/userValidator');
 
 const {
@@ -16,23 +17,77 @@ const {
   uploadUserImage,
   resizeUserImage,
   updateUserPassword,
+  getLoggedUserData,
+  UpdateLoggedUserPassword,
+  UpdateLoggedUserData,
+  deactivateLoggedUser,
 } = require('../controllers/userControllers');
 
+const authController = require('../controllers/authControllers');
+
 const router = express.Router();
+router.get('/getMe', authController.protect, getLoggedUserData, getUser);
+router.put(
+  '/updateMyPassword',
+  authController.protect,
+  UpdateLoggedUserPassword
+);
+
+router.put(
+  '/updateMe',
+  authController.protect,
+  UpdateLoggedUserDataValidator,
+  UpdateLoggedUserData
+);
+
+router.put('/deactivateMe', authController.protect, deactivateLoggedUser);
 
 router
   .route('/updatePassword/:id')
-  .put(updatePasswordValidator, updateUserPassword);
+  .put(
+    authController.protect,
+    authController.restrictTo('admin', 'manager'),
+    updatePasswordValidator,
+    updateUserPassword
+  );
 
 router
   .route('/')
-  .get(getUsers)
-  .post(uploadUserImage, resizeUserImage, createUserValidator, createUser);
+  .get(
+    authController.protect,
+    authController.restrictTo('admin', 'manager'),
+    getUsers
+  )
+  .post(
+    authController.protect,
+    authController.restrictTo('admin'),
+    uploadUserImage,
+    resizeUserImage,
+    createUserValidator,
+    createUser
+  );
 
 router
   .route('/:id')
-  .get(getUserValidator, getUser)
-  .put(uploadUserImage, resizeUserImage, updateUserValidator, updateUser)
-  .delete(deleteUserValidator, deleteUser);
+  .get(
+    authController.protect,
+    authController.restrictTo('admin'),
+    getUserValidator,
+    getUser
+  )
+  .put(
+    authController.protect,
+    authController.restrictTo('admin'),
+    uploadUserImage,
+    resizeUserImage,
+    updateUserValidator,
+    updateUser
+  )
+  .delete(
+    authController.protect,
+    authController.restrictTo('admin'),
+    deleteUserValidator,
+    deleteUser
+  );
 
 module.exports = router;
