@@ -7,7 +7,7 @@ const {
 const {
   singUp,
   login,
-  forgetPassword,
+  // forgetPassword,
 } = require('../controllers/authControllers');
 
 const router = express.Router();

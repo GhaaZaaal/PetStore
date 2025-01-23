@@ -9,8 +9,12 @@ const dbConnection = () => {
       writeConcern: { w: 'majority', j: true }, // Fix deprecated write concern options
     })
     .then((conn) => {
-      console.log(`DB Connected Successfully at Host : ${conn.connection.host}`);
-    })
+      console.log(
+        `DB Connected Successfully at Host : ${conn.connection.host}`
+      );
+    });
 };
+
+mongoose.set('useFindAndModify', false);
 
 module.exports = dbConnection;

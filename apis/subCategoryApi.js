@@ -17,8 +17,8 @@ const {
 } = require('../utils/validators/subCategoryValidator');
 
 const authController = require('../controllers/authControllers');
-// Merge Params => Allow Access Params In Other Routes
 
+// Merge Params => Allow Access Params In Other Routes
 const router = express.Router({ mergeParams: true });
 
 router

@@ -58,7 +58,7 @@ const productSchema = new mongoose.Schema(
       type: mongoose.Schema.ObjectId,
       ref: 'Brand',
     },
-    rateAverage: {
+    ratingsAverage: {
       type: Number,
       min: [1, 'Rating Must Be Above or Equal To 1.0'],
       max: [5, 'Rating Must Be Equal To or Below 5.0'],
@@ -68,8 +68,27 @@ const productSchema = new mongoose.Schema(
       default: 0,
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
 );
+
+productSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'product',
+  localField: '_id',
+});
+
+// ? Testing Populate With Mongoose Middleware First Try
+productSchema.pre(/^find/, function (next) {
+  this.populate({
+    path: 'category',
+    select: 'name',
+  });
+  next();
+});
 
 const setImagesUrl = (doc) => {
   if (doc.imageCover) {
@@ -89,15 +108,6 @@ productSchema.post('init', (doc) => {
 
 productSchema.post('save', (doc) => {
   setImagesUrl(doc);
-});
-
-// ? Testing Populate With Mongoose Middleware First Try
-productSchema.pre(/^find/, function (next) {
-  this.populate({
-    path: 'category',
-    select: 'name',
-  });
-  next();
 });
 
 // 2- Create Model

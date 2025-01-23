@@ -52,6 +52,7 @@ exports.updateOne = (Model) =>
     if (!modelTypeDocument) {
       return next(new ApiError(`[ ${req.params.id} ]: Not Found!`, 404));
     }
+    modelTypeDocument.save(); // To Trigger Save Event
     res.status(200).json({ data: modelTypeDocument });
   });
 
@@ -63,6 +64,7 @@ exports.deleteOne = (Model) =>
     if (!modelTypeDocument) {
       return next(new ApiError(`[ ${id} ]: Not Found!`, 404));
     }
+    modelTypeDocument.remove(); // To Trigger Remove Event
 
     res.status(200).json({
       data: `[ ${modelTypeDocument.name || modelTypeDocument.title} ]: Deleted Successfully `,

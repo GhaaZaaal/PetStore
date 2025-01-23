@@ -53,7 +53,7 @@ exports.getProducts = dry.getAll(Product, 'Products');
 // @desc:   Get A Specific Product
 // @route:  GET {API_V}/products/:id
 // @access: Public
-exports.getProduct = dry.getOne(Product);
+exports.getProduct = dry.getOne(Product, 'reviews');
 
 // @desc:   Create A New Product
 // @route:  POST {API_V}/products

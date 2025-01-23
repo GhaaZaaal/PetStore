@@ -17,7 +17,6 @@ const {
 } = require('../controllers/categoryControllers');
 
 const authController = require('../controllers/authControllers');
-
 const subCategoriesApi = require('./subCategoryApi');
 
 const router = express.Router();
