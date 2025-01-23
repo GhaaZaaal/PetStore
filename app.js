@@ -4,27 +4,20 @@ const express = require('express');
 const morgan = require('morgan');
 require('dotenv/config');
 
-// APIs
-const categoryApi = require('./apis/categoryApi');
-const subCategoryApi = require('./apis/subCategoryApi');
-const brandApi = require('./apis/brandApi');
-const productApi = require('./apis/productApi');
-const userApi = require('./apis/userApi');
-const authApi = require('./apis/authApi');
-const reviewApi = require('./apis/reviewApi');
-const wishListApi = require('./apis/wishListApi');
-
 // Error Handler
 const ApiError = require('./utils/apiError');
+// Unhandled Error Handler
 const globalError = require('./middlewares/errorMiddleware');
-const dbConnection = require('./config/db');
-
 // Database Connection
+const dbConnection = require('./config/db');
+// APIs
+const mountApis = require('./apis');
+
 dbConnection();
+const apiV = process.env.API_V;
 
 // Express App
 const app = express();
-const apiV = process.env.API_V;
 
 // Middleware for parsing JSON (in case you want to accept JSON requests)
 app.use(express.json());
@@ -34,15 +27,8 @@ if (process.env.NODE_ENV === 'Development') {
   app.use(morgan('dev'));
   console.log(`Mode: ${process.env.NODE_ENV}`);
 }
+mountApis(app);
 
-app.use(`${apiV}/categories`, categoryApi);
-app.use(`${apiV}/subCategories`, subCategoryApi);
-app.use(`${apiV}/brands`, brandApi);
-app.use(`${apiV}/products`, productApi);
-app.use(`${apiV}/users`, userApi);
-app.use(`${apiV}/auth`, authApi);
-app.use(`${apiV}/reviews`, reviewApi);
-app.use(`${apiV}/wishList`, wishListApi);
 // Create Error and Send it To Error Handling Middleware
 app.all('*', (req, res, next) => {
   next(new ApiError(`Can't Find This Route: ${req.originalUrl}`, 400));
@@ -53,7 +39,7 @@ app.use(globalError);
 
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => {
-  console.log(`App is running on http://localhost:${PORT}`);
+  console.log(`App is running on http://localhost:${PORT}${apiV}`);
 });
 
 // Handle Rejections Errors Outside Express
