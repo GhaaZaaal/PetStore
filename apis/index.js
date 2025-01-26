@@ -8,7 +8,8 @@ const userApi = require('./userApi');
 const authApi = require('./authApi');
 const reviewApi = require('./reviewApi');
 const wishListApi = require('./wishListApi');
-const cart = require('./cartApi');
+const cartApi = require('./cartApi');
+const orderApi = require('./orderApi');
 
 const apiV = process.env.API_V;
 
@@ -21,7 +22,8 @@ const mountApis = (app) => {
   app.use(`${apiV}/auth`, authApi);
   app.use(`${apiV}/reviews`, reviewApi);
   app.use(`${apiV}/wishList`, wishListApi);
-  app.use(`${apiV}/cart`, cart);
+  app.use(`${apiV}/cart`, cartApi);
+  app.use(`${apiV}/orders`, orderApi);
 };
 
 module.exports = mountApis;
