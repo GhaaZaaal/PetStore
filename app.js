@@ -23,6 +23,8 @@ const app = express();
 app.use(express.json());
 app.use(`${apiV}`, express.static(path.join(__dirname, 'uploads')));
 
+
+
 if (process.env.NODE_ENV === 'Development') {
   app.use(morgan('dev'));
   console.log(`Mode: ${process.env.NODE_ENV}`);
