@@ -1,6 +1,7 @@
 const slugify = require('slugify');
 const { param, check } = require('express-validator');
 const validatorMiddleware = require('../../middlewares/validatorMiddleware');
+const Category = require('../../models/categoryModel');
 
 exports.createSubCategoryValidator = [
   check('name')
@@ -18,7 +19,16 @@ exports.createSubCategoryValidator = [
     .notEmpty()
     .withMessage('Main Category is Required')
     .isMongoId()
-    .withMessage('Invalid Category ID Format'),
+    .withMessage('Invalid Category ID Format')
+    .custom((categoryId) =>
+      Category.findById(categoryId).then((category) => {
+        if (!category) {
+          return Promise.reject(
+            new Error(`Category: ${categoryId} Not Found!!!`)
+          );
+        }
+      })
+    ),
   validatorMiddleware,
 ];
 

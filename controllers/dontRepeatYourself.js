@@ -61,6 +61,8 @@ exports.deleteOne = (Model) =>
     const { id } = req.params;
 
     const modelTypeDocument = await Model.findByIdAndDelete(id);
+    console.log(modelTypeDocument);
+
     if (!modelTypeDocument) {
       return next(new ApiError(`[ ${id} ]: Not Found!`, 404));
     }
