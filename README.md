@@ -23,37 +23,71 @@ PetStore API is a **RESTful** e-commerce backend service built with **Node.js**,
 
 ## 📂 Project Structure
 
+<details>
+  <summary> My Tree </summary>
+
 ```
 .
 ├── app.js
-├── config
-│   ├── db.js               # Database connection
-│   ├── env.example         # Environment variable example file
-├── controllers
-│   ├── authController.js   # Authentication logic
-│   ├── productController.js # Product CRUD operations
-│   ├── userController.js   # User-related operations
-│   ├── orderController.js  # Order management
-├── middleware
-│   ├── authMiddleware.js   # Authentication & role protection
-│   ├── errorMiddleware.js  # Global error handling
-├── models
-│   ├── User.js             # User schema/model
-│   ├── Product.js          # Product schema/model
-│   ├── Order.js            # Order schema/model
 ├── routes
-│   ├── authRoutes.js       # Authentication endpoints
-│   ├── productRoutes.js    # Product endpoints
-│   ├── userRoutes.js       # User management endpoints
-│   ├── orderRoutes.js      # Order management endpoints
+│   ├── authApi.js                  # Authentication endpoints
+│   ├── brandApi.js                 # Brand endpoints
+│   ├── cartApi.js                  # Cart management endpoints
+│   ├── categoryApi.js              # Category endpoints
+│   ├── index.js                    # Dry Principle endpoints For All
+│   ├── orderApi.js                 # Order management endpoints
+│   ├── productApi.js               # Product endpoints
+│   ├── reviewApi.js                # Review management endpoints
+│   ├── subCategoryApi.js           # SubCategory management endpoints
+│   ├── userApi.js                  # User-related  endpoints
+│   ├── wishListApi.js              # WishList management endpoints
+├── config
+│   ├── db.js                       # Database connection
+├── controllers
+│   ├── authControllers.js          # Authentication logic
+│   ├── brandControllers.js         # Brand CRUD operations
+│   ├── cartControllers.js          # Cart CRUD operations
+│   ├── categoryControllers.js      # Category CRUD operations
+│   ├── dontRepeatYourSelf.js       # Dry Principle CRUD operations For All
+│   ├── orderControllers.js         # Order CRUD operations
+│   ├── productControllers.js       # Product CRUD operations
+│   ├── reviewControllers.js        # Review CRUD operations
+│   ├── subCategoryControllers.js   # SubCategory CRUD operations
+│   ├── userControllers.js          # User-related operations
+│   ├── wishListControllers.js      # WishList CRUD operations
+├── middleware
+│   ├── errorMiddleware.js          # Global error handling
+│   ├── uploadImage.js              # uploading Image Handler
+│   ├── validatoryMiddleware.js     # Validation Errors Handler
+├── models
+│   ├── brandModel.js               # Brand schema/model
+│   ├── cartModel.js                # Cart schema/model
+│   ├── categoryModel.js            # Category schema/model
+│   ├── orderModel.js               # Order schema/model
+│   ├── productModel.js             # Product schema/model
+│   ├── reviewModel.js              # Review schema/model
+│   ├── subCategoryModel.js         # SubCategory schema/model
+│   ├── userModel.js                # User schema/model
 ├── utils
-│   ├── validators.js       # Input validation functions
-│   ├── errorHandler.js     # Error handler utility
-│   ├── logger.js           # Logging utility
-├── .gitignore              # Ignoring sensitive files (node_modules, .env)
-├── package.json            # Project dependencies & scripts
-├── README.md               # Documentation
+│   ├── validators
+    │   ├── authValidator.js        # Authentication Validator
+    │   ├── brandValidator.js       # Brand CRUD operations Validators
+    │   ├── categoryValidator.js    # Category CRUD operations Validators
+    │   ├── productValidator.js     # Product CRUD operations Validators
+    │   ├── reviewValidator.js      # Review CRUD operations Validators
+    │   ├── subCategoryValidator.js # SubCategory CRUD operations Validators
+    │   ├── userValidator.js        # User CRUD operations Validators
+│   ├── apiError.js                 # Predicted Errors Handler
+│   ├── apiFeatures.js              # APIs features
+│   ├── createToken.js              # Creating token object
+├── .gitignore                      # Ignoring sensitive files (node_modules, .env)
+├── package.json                    # Project dependencies & scripts
+├── package-lock.json               # Project dependencies & scripts
+│   .env                            # Environment variable file
+├── README.md                       # Documentation
 ```
+
+</details>
 
 ---
 
@@ -61,7 +95,7 @@ PetStore API is a **RESTful** e-commerce backend service built with **Node.js**,
 
 ### 1️⃣ Prerequisites
 
-- Node.js installed (v16+ recommended)
+- Node.js installed
 - MongoDB installed or use a cloud database like **MongoDB Atlas**
 - Postman (or any API testing tool)
 
@@ -98,42 +132,135 @@ npm run dev      # Start with Nodemon (for development)
 
 ---
 
-## 🔥 API Endpoints
+# 🔥 API Endpoints
 
-### Authentication (`/api/v1/auth`)
+<details>
+  <summary><h2 style="display: inline">Endpoints</h2></summary>
 
-| Method | Endpoint  | Description              |
-| ------ | --------- | ------------------------ |
-| POST   | `/signup` | Register new user        |
-| POST   | `/login`  | User login (returns JWT) |
+## 📌 Authentication (`/api/v1/auth`)
 
-### Products (`/api/v1/products`)
-
-| Method | Endpoint | Description            |
-| ------ | -------- | ---------------------- |
-| GET    | `/`      | Get all products       |
-| POST   | `/`      | Add new product        |
-| GET    | `/:id`   | Get a product by ID    |
-| PUT    | `/:id`   | Update product details |
-| DELETE | `/:id`   | Delete a product       |
-
-### Users (`/api/v1/users`)
-
-| Method | Endpoint        | Description                |
-| ------ | --------------- | -------------------------- |
-| GET    | `/getMe`        | Get logged-in user profile |
-| PUT    | `/updateMe`     | Update user profile        |
-| DELETE | `/deactivateMe` | Delete user account        |
-
-### Orders (`/api/v1/orders`)
-
-| Method | Endpoint   | Description         |
-| ------ | ---------- | ------------------- |
-| POST   | `/:cartId` | Create a new order  |
-| GET    | `/:id`     | Get order details   |
-| GET    | `/`        | Get all user orders |
+| **Method** | **Endpoint** | **Description**          |
+| ---------- | ------------ | ------------------------ |
+| `POST`     | `/signup`    | Register a new user      |
+| `POST`     | `/login`     | User login (returns JWT) |
 
 ---
+
+## 👤 Users (`/api/v1/users`)
+
+| **Method** | **Endpoint**        | **Description**                |
+| ---------- | ------------------- | ------------------------------ |
+| `GET`      | `/getMe`            | Get logged-in user profile     |
+| `PUT`      | `/updateMe`         | Update logged-in user data     |
+| `PUT`      | `/updateMyPassword` | Update logged-in user password |
+| `DELETE`   | `/deactivateMe`     | Deactivate logged-in user      |
+| `GET`      | `/`                 | Get all users (Admin/Manager)  |
+| `POST`     | `/`                 | Create a new user (Admin)      |
+| `GET`      | `/:id`              | Get a user by ID (Admin)       |
+| `PUT`      | `/:id`              | Update user details (Admin)    |
+| `DELETE`   | `/:id`              | Delete a user (Admin)          |
+
+---
+
+## 🛒 Products (`/api/v1/products`)
+
+| **Method** | **Endpoint**           | **Description**           |
+| ---------- | ---------------------- | ------------------------- |
+| `GET`      | `/`                    | Get all products          |
+| `POST`     | `/`                    | Add a new product (Admin) |
+| `GET`      | `/:id`                 | Get product by ID         |
+| `PUT`      | `/:id`                 | Update product (Admin)    |
+| `DELETE`   | `/:id`                 | Delete product (Admin)    |
+| `GET`      | `/:productsId/reviews` | Get product reviews       |
+| `POST`     | `/:productsId/reviews` | Add product review (User) |
+
+---
+
+## 🏷 Brands (`/api/v1/brands`)
+
+| **Method** | **Endpoint** | **Description**               |
+| ---------- | ------------ | ----------------------------- |
+| `GET`      | `/`          | Get all brands                |
+| `POST`     | `/`          | Add new brand (Admin/Manager) |
+| `GET`      | `/:id`       | Get brand by ID               |
+| `PUT`      | `/:id`       | Update brand (Admin/Manager)  |
+| `DELETE`   | `/:id`       | Delete brand (Admin)          |
+
+---
+
+## 📂 Categories (`/api/v1/categories`)
+
+| **Method** | **Endpoint**                 | **Description**                 |
+| ---------- | ---------------------------- | ------------------------------- |
+| `GET`      | `/`                          | Get all categories              |
+| `POST`     | `/`                          | Add new category (Admin)        |
+| `GET`      | `/:id`                       | Get category by ID              |
+| `PUT`      | `/:id`                       | Update category (Admin)         |
+| `DELETE`   | `/:id`                       | Delete category (Admin)         |
+| `GET`      | `/:categoryId/subCategories` | Get subcategories of a category |
+| `POST`     | `/:categoryId/subCategories` | Add subcategory (Admin)         |
+
+---
+
+## 🔖 Subcategories (`/api/v1/subCategories`)
+
+| **Method** | **Endpoint** | **Description**             |
+| ---------- | ------------ | --------------------------- |
+| `GET`      | `/`          | Get all subcategories       |
+| `POST`     | `/`          | Add new subcategory (Admin) |
+| `GET`      | `/:id`       | Get subcategory by ID       |
+| `PUT`      | `/:id`       | Update subcategory (Admin)  |
+| `DELETE`   | `/:id`       | Delete subcategory (Admin)  |
+
+---
+
+## 🛍 Cart (`/api/v1/cart`)
+
+| **Method** | **Endpoint** | **Description**            |
+| ---------- | ------------ | -------------------------- |
+| `GET`      | `/`          | Get logged-in user's cart  |
+| `POST`     | `/`          | Add product to cart (User) |
+| `DELETE`   | `/`          | Clear entire cart (User)   |
+| `PUT`      | `/:itemId`   | Update cart item quantity  |
+| `DELETE`   | `/:itemId`   | Remove specific cart item  |
+
+---
+
+## 📦 Orders (`/api/v1/orders`)
+
+| **Method** | **Endpoint**   | **Description**                         |
+| ---------- | -------------- | --------------------------------------- |
+| `GET`      | `/`            | Get all user orders                     |
+| `POST`     | `/:cartId`     | Create a new order (User)               |
+| `GET`      | `/:id`         | Get order details                       |
+| `PUT`      | `/:id/pay`     | Mark order as paid (Admin/Manager)      |
+| `PUT`      | `/:id/deliver` | Mark order as delivered (Admin/Manager) |
+
+---
+
+## ❤️ Wishlist (`/api/v1/wishList`)
+
+| **Method** | **Endpoint**  | **Description**                |
+| ---------- | ------------- | ------------------------------ |
+| `GET`      | `/`           | Get logged-in user's wishlist  |
+| `POST`     | `/`           | Add product to wishlist (User) |
+| `DELETE`   | `/:productId` | Remove product from wishlist   |
+
+---
+
+## ⭐ Reviews (`/api/v1/reviews`)
+
+| **Method** | **Endpoint** | **Description**            |
+| ---------- | ------------ | -------------------------- |
+| `GET`      | `/`          | Get all reviews            |
+| `POST`     | `/`          | Add a new review (User)    |
+| `GET`      | `/:id`       | Get review details         |
+| `PUT`      | `/:id`       | Update review (User)       |
+| `DELETE`   | `/:id`       | Delete review (User/Admin) |
+
+---
+
+</details>
 
 ## ✅ Best Practices Followed
 
