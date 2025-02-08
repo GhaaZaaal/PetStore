@@ -15,11 +15,11 @@ const {
   uploadProductImages,
   resizeProductImages,
 } = require('../controllers/productControllers');
-
 const authController = require('../controllers/authControllers');
 const reviewApi = require('./reviewApi');
 
 const router = express.Router();
+
 // POST /products/:productId/reviews
 // GET /products/:productId/reviews
 // GET /products/:productId/reviews/:reviewId

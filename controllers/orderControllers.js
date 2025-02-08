@@ -10,9 +10,9 @@ const Order = require('../models/orderModel');
 // @route:  GET {API_V}/orders/cartId
 // @access: Protected/User
 exports.createCashOrder = asyncHandler(async (req, res, next) => {
+  // 1- Get Cart Depend On Cart Id
   const taxPrice = 0;
   const shippingPrice = 0;
-  // 1- Get Cart Depend On Cart Id
   const cart = await Cart.findById(req.params.cartId);
   if (!cart) {
     return next(

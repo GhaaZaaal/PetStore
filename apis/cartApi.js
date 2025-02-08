@@ -1,6 +1,5 @@
 const express = require('express');
 
-const authController = require('../controllers/authControllers');
 const {
   addProductToCart,
   getLoggedUserCart,
@@ -9,34 +8,21 @@ const {
   updateCartItemQuantity,
 } = require('../controllers/cartControllers');
 
+const authController = require('../controllers/authControllers');
+
 const router = express.Router();
 
+router.use(authController.protect, authController.restrictTo('user'));
 router
   .route('/')
-  .get(
-    authController.protect,
-    authController.restrictTo('user'),
-    getLoggedUserCart
-  )
-  .post(
-    authController.protect,
-    authController.restrictTo('user'),
-    addProductToCart
-  )
-  .delete(authController.protect, authController.restrictTo('user'), clearCart);
+  .get(getLoggedUserCart)
+  .post(addProductToCart)
+  .delete(clearCart);
 
 router
   .route('/:itemId')
   .get()
-  .put(
-    authController.protect,
-    authController.restrictTo('user'),
-    updateCartItemQuantity
-  )
-  .delete(
-    authController.protect,
-    authController.restrictTo('user'),
-    removeSpecificCartItem
-  );
+  .put(updateCartItemQuantity)
+  .delete(removeSpecificCartItem);
 
 module.exports = router;

@@ -26,26 +26,18 @@ const {
 const authController = require('../controllers/authControllers');
 
 const router = express.Router();
-router.get('/getMe', authController.protect, getLoggedUserData, getUser);
-router.put(
-  '/updateMyPassword',
-  authController.protect,
-  UpdateLoggedUserPassword
-);
 
-router.put(
-  '/updateMe',
-  authController.protect,
-  UpdateLoggedUserDataValidator,
-  UpdateLoggedUserData
-);
+router.use(authController.protect);
 
-router.put('/deactivateMe', authController.protect, deactivateLoggedUser);
+router.get('/getMe', getLoggedUserData, getUser);
+router.put('/updateMyPassword', UpdateLoggedUserPassword);
+router.put('/updateMe', UpdateLoggedUserDataValidator, UpdateLoggedUserData);
+router.put('/deactivateMe', deactivateLoggedUser);
 
+// Admin
 router
   .route('/updatePassword/:id')
   .put(
-    authController.protect,
     authController.restrictTo('admin', 'manager'),
     updatePasswordValidator,
     updateUserPassword
@@ -53,13 +45,8 @@ router
 
 router
   .route('/')
-  .get(
-    authController.protect,
-    authController.restrictTo('admin', 'manager'),
-    getUsers
-  )
+  .get(authController.restrictTo('admin', 'manager'), getUsers)
   .post(
-    authController.protect,
     authController.restrictTo('admin'),
     uploadUserImage,
     resizeUserImage,
@@ -67,27 +54,13 @@ router
     createUser
   );
 
+router.use(authController.restrictTo('admin'));
+
 router
   .route('/:id')
-  .get(
-    authController.protect,
-    authController.restrictTo('admin'),
-    getUserValidator,
-    getUser
-  )
-  .put(
-    authController.protect,
-    authController.restrictTo('admin'),
-    uploadUserImage,
-    resizeUserImage,
-    updateUserValidator,
-    updateUser
-  )
-  .delete(
-    authController.protect,
-    authController.restrictTo('admin'),
-    deleteUserValidator,
-    deleteUser
-  );
+  .get(getUserValidator, getUser)
+  .put(uploadUserImage, resizeUserImage, updateUserValidator, updateUser)
+  .delete(deleteUserValidator, deleteUser);
 
 module.exports = router;
+

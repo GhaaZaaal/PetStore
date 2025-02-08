@@ -4,6 +4,7 @@ const ApiError = require('../utils/apiError');
 const Product = require('../models/productModel');
 const Cart = require('../models/cartModel');
 
+// @desc:   Calculate Total Cart Price
 const calcTotalCartPrice = (cart) => {
   let totalPrice = 0;
   cart.cartItems.forEach((item) => {
@@ -14,10 +15,10 @@ const calcTotalCartPrice = (cart) => {
 
 // @desc:   Add Product To Cart
 // @route:  POST {API_V}/cart
-// @access: Private/User
-exports.addProductToCart = asyncHandler(async (req, res, next) => {
+// @access: Protected-Private/User
+exports.addProductToCart = asyncHandler(async (req, res) => {
   const { productId, color } = req.body;
-
+  
   const product = await Product.findById(productId);
 
   // 1- Get Cart For Logged User
@@ -57,18 +58,18 @@ exports.addProductToCart = asyncHandler(async (req, res, next) => {
 
 // @desc:   Get Logged User Cart
 // @route:  GET {API_V}/cart
-// @access: Private/User
+// @access: Protected-Private/User
 exports.getLoggedUserCart = asyncHandler(async (req, res, next) => {
   const cart = await Cart.findOne({ user: req.user._id });
 
   if (!cart) {
     return next(
-      new ApiError(`There is no Cart for this user Id: ${req.user._id} `, 404)
+      new ApiError(`There is no Cart for this User Id: ${req.user._id} `, 404)
     );
   }
 
   res.status(200).json({
-    status: 'Success',
+    status: 'success',
     numOfCartItems: cart.cartItems.length,
     data: cart,
   });
@@ -76,8 +77,8 @@ exports.getLoggedUserCart = asyncHandler(async (req, res, next) => {
 
 // @desc:   Remove Specific Cart Item
 // @route:  DELETE {API_V}/cart/:itemId
-// @access: Private/User
-exports.removeSpecificCartItem = asyncHandler(async (req, res, next) => {
+// @access: Protected-Private/User
+exports.removeSpecificCartItem = asyncHandler(async (req, res) => {
   const cart = await Cart.findOneAndUpdate(
     { user: req.user._id },
     {
@@ -98,8 +99,8 @@ exports.removeSpecificCartItem = asyncHandler(async (req, res, next) => {
 
 // @desc:   Clear Cart Items
 // @route:  DELETE {API_V}/cart
-// @access: Private/User
-exports.clearCart = asyncHandler(async (req, res, next) => {
+// @access: Protected-Private/User
+exports.clearCart = asyncHandler(async (req, res) => {
   await Cart.findOneAndDelete({ user: req.user._id });
   res.status(200).send({
     status: 'success',

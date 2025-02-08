@@ -13,31 +13,26 @@ const authController = require('../controllers/authControllers');
 
 const router = express.Router();
 
+router.use(authController.protect);
+
 router.get(
   '/',
-  authController.protect,
   authController.restrictTo('user', 'admin', 'manager'),
   filterOrderForLoggedUser,
   getAllOrders
 );
 router
   .route('/:cartId')
-  .post(
-    authController.protect,
-    authController.restrictTo('user'),
-    createCashOrder
-  );
+  .post(authController.restrictTo('user'), createCashOrder);
 
 router.route('/:id').get(getSpecificOrder);
 router.put(
   '/:id/pay',
-  authController.protect,
   authController.restrictTo('admin', 'manager'),
   updateOrderToPaid
 );
 router.put(
   '/:id/deliver',
-  authController.protect,
   authController.restrictTo('admin', 'manager'),
   updateOrderToDelivered
 );

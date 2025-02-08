@@ -23,7 +23,7 @@ exports.getAll = (Model, modelName) =>
   asyncHandler(async (req, res) => {
     let filter = {};
     if (req.filterObject) filter = req.filterObject;
-    const countDocuments = await Model.countDocuments();
+    const countDocuments = await Model.countDocuments(); // Build Query
     const apiFeatures = new ApiFeatures(Model.find(filter), req.query)
       .paginate(countDocuments)
       .filter()
@@ -61,7 +61,6 @@ exports.deleteOne = (Model) =>
     const { id } = req.params;
 
     const modelTypeDocument = await Model.findByIdAndDelete(id);
-    console.log(modelTypeDocument);
 
     if (!modelTypeDocument) {
       return next(new ApiError(`[ ${id} ]: Not Found!`, 404));

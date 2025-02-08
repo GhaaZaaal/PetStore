@@ -1,11 +1,11 @@
 const express = require('express');
+
 const {
   getCategoryValidator,
   createCategoryValidator,
   updateCategoryValidator,
   deleteCategoryValidator,
 } = require('../utils/validators/categoryValidator');
-
 const {
   createCategories,
   getCategories,
@@ -17,16 +17,19 @@ const {
 } = require('../controllers/categoryControllers');
 
 const authController = require('../controllers/authControllers');
+
 const subCategoriesApi = require('./subCategoryApi');
 
 const router = express.Router();
 
+// Nested Route
 router.use('/:categoryId/subCategories', subCategoriesApi);
+
+router.use(authController.protect);
 
 router
   .route('/')
   .post(
-    authController.protect,
     authController.restrictTo('admin', 'manager'),
     uploadCategoryImage,
     resizeCategoryImage,
@@ -39,7 +42,6 @@ router
   .route('/:id')
   .get(getCategoryValidator, getCategory)
   .put(
-    authController.protect,
     authController.restrictTo('admin', 'manager'),
     uploadCategoryImage,
     resizeCategoryImage,
@@ -47,7 +49,6 @@ router
     updateCategory
   )
   .delete(
-    authController.protect,
     authController.restrictTo('admin'),
     deleteCategoryValidator,
     deleteCategory

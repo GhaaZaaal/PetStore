@@ -1,11 +1,11 @@
 const express = require('express');
+
 const {
   getBrandValidator,
   createBrandValidator,
   updateBrandValidator,
   deleteBrandValidator,
 } = require('../utils/validators/brandValidator');
-
 const {
   createBrand,
   getBrand,

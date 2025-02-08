@@ -1,33 +1,19 @@
 const express = require('express');
 
+const authController = require('../controllers/authControllers');
+
 const {
   addProductToWishList,
   removeProductToWishList,
   GetLoggedUserWishList,
 } = require('../controllers/wishListControllers');
 
-const authController = require('../controllers/authControllers');
-
 const router = express.Router();
 
-router
-  .route('/')
-  .post(
-    authController.protect,
-    authController.restrictTo('user'),
-    addProductToWishList
-  )
-  .get(
-    authController.protect,
-    authController.restrictTo('user'),
-    GetLoggedUserWishList
-  );
+router.use(authController.protect, authController.restrictTo('user'));
 
-router.delete(
-  '/:productId',
-  authController.protect,
-  authController.restrictTo('user'),
-  removeProductToWishList
-);
+router.route('/').post(addProductToWishList).get(GetLoggedUserWishList);
+
+router.delete('/:productId', removeProductToWishList);
 
 module.exports = router;
